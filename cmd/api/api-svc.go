@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -9,8 +10,8 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("api/1", health)
-	mux.HandleFunc("api/1/protected", health)
+	mux.HandleFunc("/api/1", health)
+	mux.HandleFunc("/api/1/protected", health)
 
 	server := http.Server{
 		Addr:         ":8888",
@@ -20,12 +21,13 @@ func main() {
 		WriteTimeout: time.Second * 10,
 	}
 
-	error := server.ListenAndServe()
-
 	log.Printf("Starting server on: %s", server.Addr)
 
+	error := server.ListenAndServe()
+
+
 	if error != nil {
-		log.Fatalf("Error %v/n", error.Error())
+		fmt.Errorf("Error %v/n", error.Error())
 	}
 }
 
